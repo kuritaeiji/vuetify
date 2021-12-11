@@ -1,77 +1,130 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
+  <div class="home">
+    <h1 class="text-subtitle-1 grey--text">
+      Dashboard
+    </h1>
+
+    <v-container class="my-5">
+      <v-row no-gutters class="mb-4">
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              color="grey"
+              v-bind="attrs"
+              v-on="on"
+              @click="sortBy('title')"
             >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
+              <v-icon small left>
+                mdi-file
+              </v-icon>
+              <span class="text-lowercase text-caption">by project name</span>
+            </v-btn>
+          </template>
+          <span>sort projects by project name</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              small
+              text
+              color="grey"
+              v-bind="attrs"
+              v-on="on"
+              @click="sortBy('person')"
             >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+              <v-icon left small>
+                mdi-account
+              </v-icon>
+              <span class="text-lowercase">by person</span>
+            </v-btn>
+          </template>
+          <span>sort projects by person</span>
+        </v-tooltip>
+      </v-row>
+
+      <template v-for="project of projects">
+        <v-card :key="project.title" flat :class="`py-3 project ${project.status}`">
+          <v-row no-gutters>
+            <v-col cols="12" md="6" class="px-3">
+              <div class="text-caption grey--text">
+                Project title
+              </div>
+              <div>
+                {{ project.title }}
+              </div>
+            </v-col>
+            <v-col cols="6" sm="4" md="2" class="px-3">
+              <div class="text-caption grey--text">
+                Person
+              </div>
+              <div>
+                {{ project.person }}
+              </div>
+            </v-col>
+            <v-col cols="6" sm="4" md="2" class="px-3">
+              <div class="text-caption grey--text">
+                Due By
+              </div>
+              <div>
+                {{ project.due }}
+              </div>
+            </v-col>
+            <v-col cols="6" sm="4" md="2" class="px-3">
+              <div class="center">
+                <v-chip small :class="`${project.status} white--text`">
+                  {{ project.status }}
+                </v-chip>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+        <v-divider :key="project.title" />
+      </template>
+    </v-container>
+  </div>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      projects: [
+        { title: 'Design a new website', person: 'The Net Ninja', due: '1st Jan 2019', status: 'ongoing', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!' },
+        { title: 'Code up the homepage', person: 'Chun Li', due: '10th Jan 2019', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!' },
+        { title: 'Design video thumbnails', person: 'Ryu', due: '20th Dec 2018', status: 'complete', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!' },
+        { title: 'Create a community forum', person: 'Gouken', due: '20th Oct 2018', status: 'overdue', content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt consequuntur eos eligendi illum minima adipisci deleniti, dicta mollitia enim explicabo fugiat quidem ducimus praesentium voluptates porro molestias non sequi animi!' }
+      ]
+    }
+  },
+  methods: {
+    sortBy (prop) {
+      this.projects.sort((a, b) => a[prop] > b[prop] ? 1 : -1)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.project.ongoing {
+  border-left: 4px solid orange;
+}
+.project.complete {
+  border-left: 4px solid #3cd1c2;
+}
+.project.overdue {
+  border-left: 4px solid tomato;
+}
+
+.v-chip.ongoing {
+  background-color: orange;
+}
+.v-chip.complete {
+  background-color: #3cd1c2;
+}
+.v-chip.overdue {
+  background-color: tomato;
+}
+</style>
